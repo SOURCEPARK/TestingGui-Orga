@@ -1,0 +1,316 @@
+{
+   "openapi":"3.0.0",
+   "info":{
+      "title":"Testrunner Command API",
+      "version":"1.0.0"
+   },
+   "paths":{
+      "/start-test":{
+         "post":{
+            "summary":"Startet einen Test auf dem Testrunner",
+            "requestBody":{
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/TestStartRequest"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"Test wurde erfolgreich gestartet",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "$ref":"#/components/schemas/TestStartResponse"
+                        }
+                     }
+                  }
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      },
+      "/restart-test":{
+         "post":{
+            "summary":"Startet den aktuellen Test auf dem Testrunner neu",
+            "requestBody":{
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "type":"object",
+                        "properties":{
+                           
+                        }
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"Test wurde erfolgreich neu gestartet",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "$ref":"#/components/schemas/TestRestartResponse"
+                        }
+                     }
+                  }
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      },
+      "/stop-test":{
+         "post":{
+            "summary":"Bricht den aktuellen Test auf dem Testrunner ab",
+            "requestBody":{
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "type":"object",
+                        "properties":{
+                           
+                        }
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"Test wurde erfolgreich gestartet",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "$ref":"#/components/schemas/TestStopResponse"
+                        }
+                     }
+                  }
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      },
+      "/test-status":{
+         "get":{
+            "summary":"Gibt den Status eines laufenden Tests zurück",
+            "parameters":[
+               {
+                  "name":"testRunId",
+                  "in":"path",
+                  "required":true,
+                  "schema":{
+                     "type":"string"
+                  },
+                  "description":"Die ID des Testlaufs"
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"Status des Tests",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "$ref":"#/components/schemas/TestStatus"
+                        }
+                     }
+                  }
+               },
+               "404":{
+                  "description":"Testlauf nicht gefunden"
+               }
+            }
+         }
+      }
+   },
+   "components":{
+      "schemas":{
+         "TestStartRequest":{
+            "type":"object",
+            "properties":{
+               "testPlan":{
+                  "type":"string",
+                  "description":"Der Testplan, der ausgeführt werden soll.",
+                  "example":"https://gitlab.sourcepark.de/synaptic-dev-team/synaptic-tools-development/synaptic-service-testing/-/tree/master/TP-00001/EZDX-F-00004"
+               },
+               "platforms":{
+                  "type":"array",
+                  "items":{
+                     "type":"string"
+                  },
+                  "description":"Die Zielplattformen für den Test.",
+                  "example":[
+                     "k8s",
+                     "docker",
+                     "vagrant"
+                  ]
+               }
+            },
+            "required":[
+               "testDescription",
+               "testPlan",
+               "platforms"
+            ]
+         },
+         "TestStartResponse":{
+            "type":"object",
+            "properties":{
+               "testRunId":{
+                  "type":"string",
+                  "description":"Die ID des gestarteten Testlaufs.",
+                  "example":"run-2025-05-09-001"
+               },
+               "message":{
+                  "type":"string",
+                  "example":"Test erfolgreich gestartet"
+               },
+               "errorcode":{
+                  "type":"string",
+                  "description":"Art des Fehlers",
+                  "example":"404"
+               },
+               "errortext":{
+                  "type":"string",
+                  "description":"Beschreibung des Fehlers",
+                  "example":"Test nicht gefunden"
+               }
+            },
+            "required":[
+               "testRunId",
+               "message"
+            ]
+         },
+         "TestRestartResponse":{
+            "type":"object",
+            "properties":{
+               "testRunId":{
+                  "type":"string",
+                  "description":"Die ID des neugestarteten Testlaufs.",
+                  "example":"run-2025-05-09-001"
+               },
+               "message":{
+                  "type":"string",
+                  "example":"Test erfolgreich neu gestartet"
+               },
+               "errorcode":{
+                  "type":"string",
+                  "description":"Art des Fehlers",
+                  "example":"500"
+               },
+               "errortext":{
+                  "type":"string",
+                  "description":"Beschreibung des Fehlers",
+                  "example":"Test konnte nicht neugestartet werden"
+               }
+            },
+            "required":[
+               "testRunId",
+               "message"
+            ]
+         },
+         "TestStopResponse":{
+            "type":"object",
+            "properties":{
+               "testRunId":{
+                  "type":"string",
+                  "description":"Die ID des gestoppten Testlaufs.",
+                  "example":"run-2025-05-09-001"
+               },
+               "message":{
+                  "type":"string",
+                  "example":"Test erfolgreich gestoppt"
+               },
+               "errorcode":{
+                  "type":"string",
+                  "description":"Art des Fehlers",
+                  "example":"500"
+               },
+               "errortext":{
+                  "type":"string",
+                  "description":"Beschreibung des Fehlers",
+                  "example":"Test konnte nicht gestoppt werden"
+               }
+            },
+            "required":[
+               "testRunId",
+               "message"
+            ]
+         },
+         "TestStatus":{
+            "type":"object",
+            "properties":{
+               "runnerId":{
+                  "type":"string",
+                  "description":"Eindeutige ID des Testrunners, der den Test ausführt.",
+                  "example":"testrunner-01"
+               },
+               "testRunId":{
+                  "type":"string",
+                  "description":"Eindeutige ID des ausgeführten Tests.",
+                  "example":"run-2025-05-09-001"
+               },
+               "testName":{
+                  "type":"string",
+                  "description":"Name des Tests",
+                  "example":"ExampleName"
+               },
+               "status":{
+                  "type":"string",
+                  "enum":[
+                     "RUNNING",
+                     "PASSED",
+                     "FAILED",
+                     "SKIPPED",
+                     "PENDING",
+                     "UNREACHABLE"
+                  ],
+                  "description":"Status des Tests.",
+                  "example":"RUNNING"
+               },
+               "startTime":{
+                  "type":"string",
+                  "format":"date-time",
+                  "description":"Startzeit des Tests.",
+                  "example":"2025-05-09T10:30:00Z"
+               },
+               "elapsedSeconds":{
+                  "type":"integer",
+                  "description":"Laufzeit für diesen Test in Sekunden.",
+                  "example":45
+               },
+               "progress":{
+                  "type":"number",
+                  "description":"Fortschritt des laufenden Tests in Dezimal",
+                  "example":"0.5"
+               },
+               "errorcode":{
+                  "type":"string",
+                  "description":"Art des Fehlers",
+                  "example":"404"
+               },
+               "errortext":{
+                  "type":"string",
+                  "description":"Beschreibung des Fehlers",
+                  "example":"Test nicht gefunden"
+               },
+               "required":[
+                  "runnerId",
+                  "testRunId",
+                  "status",
+                  "progress"
+               ]
+            }
+         }
+      }
+   }
+}

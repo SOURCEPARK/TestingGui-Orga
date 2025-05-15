@@ -1,0 +1,268 @@
+{
+   "openapi":"3.0.0",
+   "info":{
+      "title":"Testrunner Monitoring API",
+      "version":"1.0.0"
+   },
+   "paths":{
+      "/heartbeat":{
+         "post":{
+            "summary":"Heartbeat vom Testrunner empfangen",
+            "requestBody":{
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/Heartbeat"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"Heartbeat empfangen"
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      },
+      "/test-status":{
+         "post":{
+            "summary":"Statusmeldung eines laufenden Tests empfangen",
+            "requestBody":{
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/TestStatus"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"Status empfangen"
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      },
+      "/test-completed":{
+         "post":{
+            "summary":"Abschlussbericht eines Tests empfangen",
+            "requestBody":{
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/TestCompleted"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"Abschlussbericht empfangen"
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      },
+      "/register-runner":{
+         "post":{
+            "summary":"Registrierung eines neuen Testrunners",
+            "requestBody":{
+               "required":true,
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/RegisterRunner"
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"Testrunner registriert"
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      }
+   },
+   "components":{
+      "schemas":{
+         "Heartbeat":{
+            "type":"object",
+            "properties":{
+               "timestamp":{
+                  "type":"string",
+                  "format":"date-time",
+                  "description":"Zeitstempel des Heartbeats.",
+                  "example":"2025-05-09T10:25:00Z"
+               },
+               "runnerId":{
+                  "type":"string",
+                  "description":"Eindeutige ID des Testrunners.",
+                  "example":"testrunner-01"
+               },
+               "status":{
+                  "type":"string",
+                  "enum":[
+                     "RUNNING",
+                     "IDLE",
+                     "ERROR"
+                  ],
+                  "description":"Aktueller Status des Testrunners.",
+                  "example":"RUNNING"
+               },
+               "sequence":{
+                  "type":"integer",
+                  "example":101
+               },
+               "uptimeSeconds":{
+                  "type":"integer",
+                  "description":"Laufzeit des Testrunners in Sekunden.",
+                  "example":3600
+               }
+            },
+            "required":[
+               "timestamp",
+               "runnerId",
+               "status",
+               "sequence"
+            ]
+         },
+         "TestStatus":{
+            "type":"object",
+            "properties":{
+               "runnerId":{
+                  "type":"string",
+                  "description":"Eindeutige ID des Testrunners, der den Test ausführt.",
+                  "example":"testrunner-01"
+               },
+               "testRunId":{
+                  "type":"string",
+                  "description":"Eindeutige ID des ausgeführten Tests.",
+                  "example":"run-2025-05-09-001"
+               },
+               "testName":{
+                  "type":"string",
+                  "description":"Name des Tests",
+                  "example":"ExampleName"
+               },
+               "status":{
+                  "type":"string",
+                  "enum":[
+                     "RUNNING",
+                     "PASSED",
+                     "FAILED",
+                     "SKIPPED",
+                     "PENDING",
+                     "UNREACHABLE"
+                  ],
+                  "description":"Status des Tests.",
+                  "example":"RUNNING"
+               },
+               "startTime":{
+                  "type":"string",
+                  "format":"date-time",
+                  "description":"Startzeit des Tests.",
+                  "example":"2025-05-09T10:30:00Z"
+               },
+               "elapsedSeconds":{
+                  "type":"integer",
+                  "description":"Laufzeit für diesen Test in Sekunden.",
+                  "example":45
+               },
+               "progress":{
+                  "type":"number",
+                  "description":"Fortschritt des laufenden Tests in Dezimal",
+                  "example":"0.5"
+               },
+               "errorcode":{
+                  "type":"string",
+                  "description":"Art des Fehlers",
+                  "example":"404"
+               },
+               "errortext":{
+                  "type":"string",
+                  "description":"Beschreibung des Fehlers",
+                  "example":"Test nicht gefunden"
+               },
+               "required":[
+                  "runnerId",
+                  "testRunId",
+                  "status",
+                  "progress"
+               ]
+            },
+            "TestCompleted":{
+               "type":"object",
+               "properties":{
+                  "runnerId":{
+                     "type":"string",
+                     "description":"ID des Testrunners, der den Test abgeschlossen hat.",
+                     "example":"testrunner-01"
+                  },
+                  "testRunId":{
+                     "type":"string",
+                     "description":"ID des abgeschlossenen Testlaufs.",
+                     "example":"run-2025-05-09-001"
+                  },
+                  "report":{
+                     "type":"string",
+                     "description":"Inhalt des Berichtes."
+                  }
+               }
+            },
+            "required":[
+               "runnerId",
+               "testRunId",
+               "results"
+            ]
+         },
+         "RegisterRunner":{
+            "type":"object",
+            "properties":{
+               "runnerId":{
+                  "type":"string",
+                  "description":"Eindeutige ID des Testrunners.",
+                  "example":"testrunner-01"
+               },
+               "url":{
+                  "type":"string",
+                  "format":"uri",
+                  "description":"URL unter der der Testrunner erreichbar ist.",
+                  "example":"http://localhost:8080"
+               },
+               "platforms":{
+                  "type":"array",
+                  "items":{
+                     "type":"string"
+                  },
+                  "description":"Liste der unterstützten Plattformen.",
+                  "example":[
+                     "k8s",
+                     "docker",
+                     "vagrant"
+                  ]
+               }
+            },
+            "required":[
+               "runnerId",
+               "url",
+               "platforms"
+            ]
+         }
+      }
+   }
+}
