@@ -69,24 +69,22 @@
          }
       },
       "/stop-test":{
-         "post":{
+         "get":{
             "summary":"Bricht den aktuellen Test auf dem Testrunner ab",
-            "requestBody":{
-               "required":true,
-               "content":{
-                  "application/json":{
-                     "schema":{
-                        "type":"object",
-                        "properties":{
-                           
-                        }
-                     }
-                  }
+            "parameters":[
+               {
+                  "name":"testRunId",
+                  "in":"path",
+                  "required":true,
+                  "schema":{
+                     "type":"string"
+                  },
+                  "description":"Die ID des Testlaufs, der gestoppt werden soll"
                }
-            },
+            ],
             "responses":{
                "200":{
-                  "description":"Test wurde erfolgreich gestartet",
+                  "description":"Test wurde erfolgreich gestoppt",
                   "content":{
                      "application/json":{
                         "schema":{
