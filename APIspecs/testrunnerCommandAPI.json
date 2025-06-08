@@ -68,7 +68,7 @@
             }
          }
       },
-      "/stop-test":{
+      "/stop-test/{testRunId}":{
          "get":{
             "summary":"Bricht den aktuellen Test auf dem Testrunner ab",
             "parameters":[
@@ -99,7 +99,7 @@
             }
          }
       },
-      "/test-status":{
+      "/test-status/{testRunId}":{
          "get":{
             "summary":"Gibt den Status eines laufenden Tests zurück",
             "parameters":[
