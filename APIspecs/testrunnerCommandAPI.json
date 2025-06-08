@@ -35,22 +35,20 @@
             }
          }
       },
-      "/restart-test":{
-         "post":{
+      "/restart-test/{testRunId}":{
+         "get":{
             "summary":"Startet den aktuellen Test auf dem Testrunner neu",
-            "requestBody":{
-               "required":true,
-               "content":{
-                  "application/json":{
-                     "schema":{
-                        "type":"object",
-                        "properties":{
-                           
-                        }
-                     }
-                  }
+            "parameters":[
+               {
+                  "name":"testRunId",
+                  "in":"path",
+                  "required":true,
+                  "schema":{
+                     "type":"string"
+                  },
+                  "description":"Die ID des Testlaufs, der neu gestartet werden soll"
                }
-            },
+            ],
             "responses":{
                "200":{
                   "description":"Test wurde erfolgreich neu gestartet",
