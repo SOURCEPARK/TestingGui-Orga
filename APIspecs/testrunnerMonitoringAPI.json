@@ -198,6 +198,11 @@
                   "description":"Beschreibung des Fehlers",
                   "example":"Test nicht gefunden"
                },
+               "message": {
+                 "type": "string",
+                 "description": "Letzte relevante ausgeführte Aktion oder Statusnachricht.",
+                 "example": "Container deployment gestartet"
+               },
                "required":[
                   "runnerId",
                   "testRunId",
