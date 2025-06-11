@@ -16,5 +16,5 @@ Projektablauf, wie am 7.5. abgestimmt. Hinzugefügt sind die Termine die über d
 | Fixes/Changes die sich aus den Reviews ergeben haben         | 2.7.               |
 | Prüfung der letzten Fixes/Changes                            | 8.7.               |
 | Bestätigung der letzten Fixes/Changes                        | 15.7.              |
-| Abschlusspräsentation                                        | 23.7.              |
+| Abschlusspräsentation                                        | 16.7.              |
 
