@@ -127,6 +127,37 @@
                }
             }
          }
+      },
+      "/heartbeat/{testRunId}":{
+         "get":{
+            "summary":"Gibt den Status eines laufenden Tests zurück",
+            "parameters":[
+               {
+                  "name":"testRunId",
+                  "in":"path",
+                  "required":true,
+                  "schema":{
+                     "type":"string"
+                  },
+                  "description":"Die ID des Testlaufs"
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"Heartbeat des Testrunners",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "$ref":"#/components/schemas/Heartbeat"
+                        }
+                     }
+                  }
+               },
+               "404":{
+                  "description":"Testlauf nicht gefunden"
+               }
+            }
+         }
       }
    },
    "components":{
@@ -311,6 +342,47 @@
                   "progress"
                ]
             }
+         },
+         "Heartbeat":{
+            "type":"object",
+            "properties":{
+               "timestamp":{
+                  "type":"string",
+                  "format":"date-time",
+                  "description":"Zeitstempel des Heartbeats.",
+                  "example":"2025-05-09T10:25:00Z"
+               },
+               "runnerId":{
+                  "type":"string",
+                  "description":"Eindeutige ID des Testrunners.",
+                  "example":"testrunner-01"
+               },
+               "status":{
+                  "type":"string",
+                  "enum":[
+                     "RUNNING",
+                     "IDLE",
+                     "ERROR"
+                  ],
+                  "description":"Aktueller Status des Testrunners.",
+                  "example":"RUNNING"
+               },
+               "sequence":{
+                  "type":"integer",
+                  "example":101
+               },
+               "uptimeSeconds":{
+                  "type":"integer",
+                  "description":"Laufzeit des Testrunners in Sekunden.",
+                  "example":3600
+               }
+            },
+            "required":[
+               "timestamp",
+               "runnerId",
+               "status",
+               "sequence"
+            ]
          }
       }
    }
