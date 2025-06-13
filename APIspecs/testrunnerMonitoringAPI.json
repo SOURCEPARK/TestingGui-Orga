@@ -2,7 +2,7 @@
    "openapi":"3.0.0",
    "info":{
       "title":"Testrunner Monitoring API",
-      "version":"1.0.0"
+      "version":"2.0.0"
    },
    "paths":{
       "/test-runner/heartbeat":{
@@ -28,7 +28,7 @@
             }
          }
       },
-      "/test-status":{
+      "test/test-status":{
          "post":{
             "summary":"Statusmeldung eines laufenden Tests empfangen",
             "requestBody":{
@@ -51,7 +51,7 @@
             }
          }
       },
-      "/test-completed":{
+      "test-runner/test-completed":{
          "post":{
             "summary":"Abschlussbericht eines Tests empfangen",
             "requestBody":{
@@ -74,7 +74,7 @@
             }
          }
       },
-      "/register-runner":{
+      "test-runner/register":{
          "post":{
             "summary":"Registrierung eines neuen Testrunners",
             "requestBody":{
