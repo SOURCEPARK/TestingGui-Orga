@@ -5,68 +5,24 @@
       "version":"2.0.0"
    },
    "paths":{
-      "/test-runner/heartbeat":{
+      "/test-runner/heartbeat/{runnerId}":{
          "post":{
             "summary":"Heartbeat vom Testrunner empfangen",
-            "requestBody":{
-               "required":true,
-               "content":{
-                  "application/json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/Heartbeat"
-                     }
-                  }
+            "parameters": [
+               {
+                  "name": "runnerId",
+                  "in": "path",
+                  "required": true,
+                  "description": "Eindeutige ID des Testrunners.",
+                  "schema": {
+                     "type": "string"
+               },
+               "example": "f58419c4-ceb0-4e4a-a435-3a6142791f8e"
                }
-            },
+            ],
             "responses":{
                "200":{
                   "description":"Heartbeat empfangen"
-               },
-               "400":{
-                  "description":"Ungültige Anfrage"
-               }
-            }
-         }
-      },
-      "test/test-status":{
-         "post":{
-            "summary":"Statusmeldung eines laufenden Tests empfangen",
-            "requestBody":{
-               "required":true,
-               "content":{
-                  "application/json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/TestStatus"
-                     }
-                  }
-               }
-            },
-            "responses":{
-               "200":{
-                  "description":"Status empfangen"
-               },
-               "400":{
-                  "description":"Ungültige Anfrage"
-               }
-            }
-         }
-      },
-      "test-runner/test-completed":{
-         "post":{
-            "summary":"Abschlussbericht eines Tests empfangen",
-            "requestBody":{
-               "required":true,
-               "content":{
-                  "application/json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/TestCompleted"
-                     }
-                  }
-               }
-            },
-            "responses":{
-               "200":{
-                  "description":"Abschlussbericht empfangen"
                },
                "400":{
                   "description":"Ungültige Anfrage"
@@ -109,11 +65,6 @@
                   "description":"Zeitstempel des Heartbeats.",
                   "example":"2025-05-09T10:25:00Z"
                },
-               "runnerId":{
-                  "type":"string",
-                  "description":"Eindeutige ID des Testrunners.",
-                  "example":"testrunner-01"
-               },
                "status":{
                   "type":"string",
                   "enum":[
@@ -132,108 +83,59 @@
                   "type":"integer",
                   "description":"Laufzeit des Testrunners in Sekunden.",
                   "example":3600
-               }
-            },
-            "required":[
-               "timestamp",
-               "runnerId",
-               "status",
-               "sequence"
-            ]
-         },
-         "TestStatus":{
-            "type":"object",
-            "properties":{
-               "runnerId":{
-                  "type":"string",
-                  "description":"Eindeutige ID des Testrunners, der den Test ausführt.",
-                  "example":"testrunner-01"
                },
-               "testRunId":{
-                  "type":"string",
-                  "description":"Eindeutige ID des ausgeführten Tests.",
-                  "example":"run-2025-05-09-001"
+               "testRunId": {
+                  "type": "string",
+                  "description": "Eindeutige ID des laufenden oder abgeschlossenen Tests.",
+                  "example": "run-2025-05-09-001"
                },
-               "testName":{
-                  "type":"string",
-                  "description":"Name des Tests",
-                  "example":"ExampleName"
+               "testName": {
+                  "type": "string",
+                  "description": "Name des Tests",
+                  "example": "ExampleName"
                },
-               "status":{
-                  "type":"string",
-                  "enum":[
-                     "RUNNING",
-                     "PASSED",
-                     "FAILED",
-                     "SKIPPED",
-                     "PENDING",
-                     "UNREACHABLE"
-                  ],
-                  "description":"Status des Tests.",
-                  "example":"RUNNING"
+               "testStatus": {
+                  "type": "string",
+                  "enum": ["RUNNING", "PASSED", "FAILED", "SKIPPED", "PENDING", "UNREACHABLE"],
+                  "description": "Status des laufenden oder letzten Tests.",
+                  "example": "RUNNING"
                },
-               "startTime":{
-                  "type":"string",
-                  "format":"date-time",
-                  "description":"Startzeit des Tests.",
-                  "example":"2025-05-09T10:30:00Z"
+               "startTime": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Startzeit des Tests.",
+                  "example": "2025-05-09T10:30:00Z"
                },
-               "elapsedSeconds":{
-                  "type":"integer",
-                  "description":"Laufzeit für diesen Test in Sekunden.",
-                  "example":45
+               "elapsedSeconds": {
+                  "type": "integer",
+                  "description": "Laufzeit für diesen Test in Sekunden.",
+                  "example": 45
                },
-               "progress":{
-                  "type":"number",
-                  "description":"Fortschritt des laufenden Tests in Dezimal",
-                  "example":"0.5"
+               "progress": {
+                  "type": "number",
+                  "description": "Fortschritt des laufenden Tests in Dezimal",
+                  "example": 0.5
                },
-               "errorcode":{
-                  "type":"string",
-                  "description":"Art des Fehlers",
-                  "example":"404"
+               "errorcode": {
+                  "type": "string",
+                  "description": "Art des Fehlers",
+                  "example": "404"
                },
-               "errortext":{
-                  "type":"string",
-                  "description":"Beschreibung des Fehlers",
-                  "example":"Test nicht gefunden"
+               "errortext": {
+                  "type": "string",
+                  "description": "Beschreibung des Fehlers",
+                  "example": "Test nicht gefunden"
                },
                "message": {
-                 "type": "string",
-                 "description": "Letzte relevante ausgeführte Aktion oder Statusnachricht.",
-                 "example": "Container deployment gestartet"
+                  "type": "string",
+                  "description": "Letzte relevante Aktion oder Statusnachricht.",
+                  "example": "Container deployment gestartet"
                },
-               "required":[
-                  "runnerId",
-                  "testRunId",
-                  "status",
-                  "progress"
-               ]
-            },
-            "TestCompleted":{
-               "type":"object",
-               "properties":{
-                  "runnerId":{
-                     "type":"string",
-                     "description":"ID des Testrunners, der den Test abgeschlossen hat.",
-                     "example":"testrunner-01"
-                  },
-                  "testRunId":{
-                     "type":"string",
-                     "description":"ID des abgeschlossenen Testlaufs.",
-                     "example":"run-2025-05-09-001"
-                  },
-                  "report":{
-                     "type":"string",
-                     "description":"Inhalt des Berichtes."
-                  }
+               "report": {
+                  "type": "string",
+                  "description": "Abschlussbericht eines abgeschlossenen Tests"
                }
-            },
-            "required":[
-               "runnerId",
-               "testRunId",
-               "results"
-            ]
+            }
          },
          "RegisterRunner":{
             "type":"object",
