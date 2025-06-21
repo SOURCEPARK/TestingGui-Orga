@@ -30,6 +30,31 @@
             }
          }
       },
+      "/test-runner/{runnerId}/heartbeat":{
+         "post":{
+            "summary":"Request für neuen heartbeat an den entsprechenden Runner senden",
+            "parameters": [
+               {
+                  "name": "runnerId",
+                  "in": "path",
+                  "required": true,
+                  "description": "Eindeutige ID des Testrunners.",
+                  "schema": {
+                     "type": "string"
+               },
+               "example": "f58419c4-ceb0-4e4a-a435-3a6142791f8e"
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"Heartbeat Request gesendet"
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      },
       "test-runner/register":{
          "post":{
             "summary":"Registrierung eines neuen Testrunners",
