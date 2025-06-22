@@ -20,34 +20,19 @@
                "example": "f58419c4-ceb0-4e4a-a435-3a6142791f8e"
                }
             ],
+            "requestBody": {
+               "required": true,
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Heartbeat"
+                        }
+                     }
+                  }
+            },
             "responses":{
                "200":{
                   "description":"Heartbeat empfangen"
-               },
-               "400":{
-                  "description":"Ungültige Anfrage"
-               }
-            }
-         }
-      },
-      "/test-runner/{runnerId}/heartbeat":{
-         "post":{
-            "summary":"Request für neuen heartbeat an den entsprechenden Runner senden",
-            "parameters": [
-               {
-                  "name": "runnerId",
-                  "in": "path",
-                  "required": true,
-                  "description": "Eindeutige ID des Testrunners.",
-                  "schema": {
-                     "type": "string"
-               },
-               "example": "f58419c4-ceb0-4e4a-a435-3a6142791f8e"
-               }
-            ],
-            "responses":{
-               "200":{
-                  "description":"Heartbeat Request gesendet"
                },
                "400":{
                   "description":"Ungültige Anfrage"
