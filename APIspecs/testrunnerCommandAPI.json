@@ -159,12 +159,12 @@
            }
          }
       },
-      "/heartbeat/{testRunId}":{
+      "/heartbeat/{runnerId}":{
          "get":{
-            "summary":"Gibt den Status eines laufenden Tests zurück",
+            "summary":"Gibt auf Anfrage vom GUI einen Heartbeat um zu prüfen, ob der Runner noch läuft",
             "parameters":[
                {
-                  "name":"testRunId",
+                  "name":"runnerId",
                   "in":"path",
                   "required":true,
                   "schema":{
