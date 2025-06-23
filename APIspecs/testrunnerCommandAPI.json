@@ -128,6 +128,37 @@
             }
          }
       },
+      "/details/{testRunId}": {
+         "get": {
+           "summary": "Detailinformationen zu einem Testlauf abrufen",
+           "parameters": [
+             {
+               "name": "testRunId",
+               "in": "path",
+               "required": true,
+               "description": "ID des Testlaufs",
+               "schema": {
+                 "type": "string"
+               }
+             }
+           ],
+           "responses": {
+             "200": {
+               "description": "Details des Testlaufs",
+               "content": {
+                 "application/json": {
+                   "schema": {
+                     "$ref": "#/components/schemas/TestRunDetails"
+                   }
+                 }
+               }
+             },
+             "404": {
+               "description": "Testlauf nicht gefunden"
+             }
+           }
+         }
+      },
       "/heartbeat/{testRunId}":{
          "get":{
             "summary":"Gibt den Status eines laufenden Tests zurück",
@@ -343,47 +374,83 @@
                ]
             }
          },
-         "Heartbeat":{
-            "type":"object",
-            "properties":{
-               "timestamp":{
-                  "type":"string",
-                  "format":"date-time",
-                  "description":"Zeitstempel des Heartbeats.",
-                  "example":"2025-05-09T10:25:00Z"
+         "TestRunDetails": {
+           "type": "object",
+           "properties": {
+             "startTime": {
+               "type": "string",
+               "format": "date-time"
+             },
+             "elapsedSeconds": {
+               "type": "integer"
+             },
+             "messages": {
+               "type": "array",
+               "items": {
+                 "type": "string"
                },
-               "runnerId":{
-                  "type":"string",
-                  "description":"Eindeutige ID des Testrunners.",
-                  "example":"testrunner-01"
-               },
-               "status":{
-                  "type":"string",
-                  "enum":[
-                     "RUNNING",
-                     "IDLE",
-                     "ERROR"
-                  ],
-                  "description":"Aktueller Status des Testrunners.",
-                  "example":"RUNNING"
-               },
-               "sequence":{
-                  "type":"integer",
-                  "example":101
-               },
-               "uptimeSeconds":{
-                  "type":"integer",
-                  "description":"Laufzeit des Testrunners in Sekunden.",
-                  "example":3600
-               }
-            },
-            "required":[
-               "timestamp",
-               "runnerId",
-               "status",
-               "sequence"
-            ]
-         }
+               "description": "Historie der letzten Statusnachrichten (max. 5)"
+             }
+           }
+         },
+      "Heartbeat": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Zeitstempel des Heartbeats.",
+            "example": "2025-05-09T10:25:00Z"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["RUNNING", "IDLE", "ERROR"],
+            "description": "Aktueller Status des Testrunners.",
+            "example": "RUNNING"
+          },
+          "sequence": {
+            "type": "integer",
+            "example": 101
+          },
+          "uptimeSeconds": {
+            "type": "integer",
+            "description": "Laufzeit des Testrunners in Sekunden.",
+            "example": 3600
+          },
+          "testRunId": {
+            "type": "string",
+            "description": "Eindeutige ID des laufenden Tests.",
+            "example": "run-2025-05-09-001"
+          },
+          "testStatus": {
+            "type": "string",
+            "enum": ["RUNNING", "PASSED", "FAILED", "SKIPPED", "PENDING", "UNREACHABLE"],
+            "description": "Status des laufenden oder letzten Tests.",
+            "example": "RUNNING"
+          },
+          "progress": {
+            "type": "number",
+            "description": "Fortschritt des laufenden Tests in Dezimal",
+            "example": 0.5
+          },
+          "message": {
+            "type": "string",
+            "description": "Letzte relevante Aktion oder Statusnachricht.",
+            "example": "Container deployment gestartet"
+          },
+          "errorcode": {
+            "type": "string",
+            "description": "Art des Fehlers",
+            "example": "404"
+          },
+          "errortext": {
+            "type": "string",
+            "description": "Beschreibung des Fehlers",
+            "example": "Test nicht gefunden"
+          }
+        },
+        "required": ["timestamp", "status", "sequence", "uptimeSeconds", "testRunId", "testStatus", "progress"]
+        }
       }
    }
 }
