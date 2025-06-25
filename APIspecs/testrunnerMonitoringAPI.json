@@ -137,7 +137,7 @@
           },
           "testStatus": {
             "type": "string",
-            "enum": ["RUNNING", "PASSED", "FAILED", "SKIPPED", "PENDING", "UNREACHABLE"],
+            "enum": ["RUNNING", "PASSED", "FAILED", "SKIPPED", "PENDING", "PAUSED"],
             "description": "Status des laufenden oder letzten Tests.",
             "example": "RUNNING"
           },
@@ -162,7 +162,7 @@
             "example": "Test nicht gefunden"
           }
         },
-        "required": ["timestamp", "status", "sequence", "uptimeSeconds", "testRunId", "testStatus", "progress"]
+        "required": ["timestamp", "status", "sequence", "uptimeSeconds"]
       },
          "RegisterRunner":{
             "type":"object",
