@@ -304,95 +304,25 @@
                "message"
             ]
          },
-         "TestStatus":{
-            "type":"object",
-            "properties":{
-               "runnerId":{
-                  "type":"string",
-                  "description":"Eindeutige ID des Testrunners, der den Test ausführt.",
-                  "example":"testrunner-01"
-               },
-               "testRunId":{
-                  "type":"string",
-                  "description":"Eindeutige ID des ausgeführten Tests.",
-                  "example":"run-2025-05-09-001"
-               },
-               "testName":{
-                  "type":"string",
-                  "description":"Name des Tests",
-                  "example":"ExampleName"
-               },
-               "status":{
-                  "type":"string",
-                  "enum":[
-                     "RUNNING",
-                     "PASSED",
-                     "FAILED",
-                     "SKIPPED",
-                     "PENDING",
-                     "UNREACHABLE"
-                  ],
-                  "description":"Status des Tests.",
-                  "example":"RUNNING"
-               },
-               "startTime":{
-                  "type":"string",
-                  "format":"date-time",
-                  "description":"Startzeit des Tests.",
-                  "example":"2025-05-09T10:30:00Z"
-               },
-               "elapsedSeconds":{
-                  "type":"integer",
-                  "description":"Laufzeit für diesen Test in Sekunden.",
-                  "example":45
-               },
-               "progress":{
-                  "type":"number",
-                  "description":"Fortschritt des laufenden Tests in Dezimal",
-                  "example":"0.5"
-               },
-               "errorcode":{
-                  "type":"string",
-                  "description":"Art des Fehlers",
-                  "example":"404"
-               },
-               "errortext":{
-                  "type":"string",
-                  "description":"Beschreibung des Fehlers",
-                  "example":"Test nicht gefunden"
-               },
-               "message": {
-                  "type": "string",
-                  "description": "Letzte relevante ausgeführte Aktion oder Statusnachricht.",
-                  "example": "Container deployment gestartet"
-               },
-               "required":[
-                  "runnerId",
-                  "testRunId",
-                  "status",
-                  "progress"
-               ]
-            }
-         },
-         "TestRunDetails": {
-           "type": "object",
-           "properties": {
-             "startTime": {
-               "type": "string",
-               "format": "date-time"
-             },
-             "elapsedSeconds": {
-               "type": "integer"
-             },
-             "messages": {
-               "type": "array",
-               "items": {
-                 "type": "string"
-               },
-               "description": "Historie der letzten Statusnachrichten (max. 5)"
-             }
-           }
-         },
+      "TestRunDetails": {
+        "type": "object",
+        "properties": {
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "elapsedSeconds": {
+            "type": "integer"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Historie der letzten Statusnachrichten (max. 5)"
+          }
+        }
+      },
       "Heartbeat": {
         "type": "object",
         "properties": {
@@ -424,7 +354,7 @@
           },
           "testStatus": {
             "type": "string",
-            "enum": ["RUNNING", "PASSED", "FAILED", "SKIPPED", "PENDING", "UNREACHABLE"],
+            "enum": ["RUNNING", "PASSED", "FAILED", "SKIPPED", "PENDING", "PAUSED"],
             "description": "Status des laufenden oder letzten Tests.",
             "example": "RUNNING"
           },
@@ -449,7 +379,7 @@
             "example": "Test nicht gefunden"
           }
         },
-        "required": ["timestamp", "status", "sequence", "uptimeSeconds", "testRunId", "testStatus", "progress"]
+        "required": ["timestamp", "status", "sequence", "uptimeSeconds"]
         }
       }
    }
