@@ -68,7 +68,7 @@
       },
       "/stop-test/{testRunId}":{
          "get":{
-            "summary":"Bricht den aktuellen Test auf dem Testrunner ab",
+            "summary":"Pausiert den aktuellen Test auf dem Testrunner",
             "parameters":[
                {
                   "name":"testRunId",
@@ -77,7 +77,7 @@
                   "schema":{
                      "type":"string"
                   },
-                  "description":"Die ID des Testlaufs, der gestoppt werden soll"
+                  "description":"Die ID des Testlaufs, der pausiert werden soll"
                }
             ],
             "responses":{
@@ -87,6 +87,37 @@
                      "application/json":{
                         "schema":{
                            "$ref":"#/components/schemas/TestStopResponse"
+                        }
+                     }
+                  }
+               },
+               "400":{
+                  "description":"Ungültige Anfrage"
+               }
+            }
+         }
+      },
+      "/resume-test/{testRunId}":{
+         "get":{
+            "summary":"Setzt den aktuellen Test des TestRunners fort",
+            "parameters":[
+               {
+                  "name":"testRunId",
+                  "in":"path",
+                  "required":true,
+                  "schema":{
+                     "type":"string"
+                  },
+                  "description":"Die ID des Testlaufs, der fortgesetzt werden soll"
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"Test wurde erfolgreich fortgesetzt",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "$ref":"#/components/schemas/TestResumeResponse"
                         }
                      }
                   }
@@ -297,6 +328,34 @@
                   "type":"string",
                   "description":"Beschreibung des Fehlers",
                   "example":"Test konnte nicht gestoppt werden"
+               }
+            },
+            "required":[
+               "testRunId",
+               "message"
+            ]
+         },
+         "TestResumeResponse":{
+            "type":"object",
+            "properties":{
+               "testRunId":{
+                  "type":"string",
+                  "description":"Die ID des fortgesetzten Testlaufs.",
+                  "example":"run-2025-05-09-001"
+               },
+               "message":{
+                  "type":"string",
+                  "example":"Test erfolgreich fortgesetzt"
+               },
+               "errorcode":{
+                  "type":"string",
+                  "description":"Art des Fehlers",
+                  "example":"500"
+               },
+               "errortext":{
+                  "type":"string",
+                  "description":"Beschreibung des Fehlers",
+                  "example":"Test konnte nicht fortgesetzt werden"
                }
             },
             "required":[
